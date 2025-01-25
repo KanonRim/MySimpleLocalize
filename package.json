@@ -1,0 +1,17 @@
+{
+  "name": "com.romabash.MySimpleLocalize",
+  "version": "0.0.1",
+  "displayName": "MySimpleLocalize",
+  "description": "",
+  "unity": "6000.0",
+  "author": {
+    "name": "Roma"
+  },
+  "keywords": [
+    "utility",
+    "tools"
+  ],
+  "dependencies": {
+	"com.unity.nuget.newtonsoft-json": "3.2.1"
+  }
+}
