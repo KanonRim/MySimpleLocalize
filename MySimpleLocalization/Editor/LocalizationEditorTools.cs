@@ -1,5 +1,4 @@
-﻿#if UNITY_EDITOR
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -99,4 +98,3 @@ namespace KoroBox.MySimpleLocalization.Editor
         }
     }
 }
-#endif
