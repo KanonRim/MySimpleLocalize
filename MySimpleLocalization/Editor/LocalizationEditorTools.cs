@@ -98,6 +98,5 @@ namespace KoroBox.MySimpleLocalization.Editor
             }
         }
     }
-
-#endif
 }
+#endif
