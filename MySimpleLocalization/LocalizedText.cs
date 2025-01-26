@@ -1,25 +1,27 @@
 ﻿using System;
 
-
-public class LocalizedText
+namespace KoroBox.MySimpleLocalization
 {
-    private readonly string _key;
-    public event Action<string> OnLanguageChanged;
-    public string Value
+    public class LocalizedText
     {
-        get;
-        private set;
-    }
+        private readonly string _key;
+        public event Action<string> OnLanguageChanged;
+        public string Value
+        {
+            get;
+            private set;
+        }
 
-    public LocalizedText (string key)
-    {
-        _key  = key;
-        LocalizationManager.Instance.OnLanguageChanged += UpdateText;
-        Value =  LocalizationManager.Instance.IsReady ? LocalizationManager.Instance.GetLocalizedText(_key) : ""; 
-    }
+        public LocalizedText (string key)
+        {
+            _key  = key;
+            LocalizationManager.Instance.OnLanguageChanged += UpdateText;
+            Value =  LocalizationManager.Instance.IsReady ? LocalizationManager.Instance.GetLocalizedText(_key) : ""; 
+        }
 
-    private void UpdateText()
-    {
-        Value = LocalizationManager.Instance.GetLocalizedText(_key);
+        private void UpdateText()
+        {
+            Value = LocalizationManager.Instance.GetLocalizedText(_key);
+        }
     }
 }

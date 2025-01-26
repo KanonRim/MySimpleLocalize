@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using KoroBox.MySimpleLocalization;
 
 public class  MonoLocalizationManager : MonoBehaviour
 {

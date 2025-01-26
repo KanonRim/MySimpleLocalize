@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using KoroBox.MySimpleLocalization;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -15,7 +16,6 @@ public class LocalizedTextUXML : MonoBehaviour
 
     private void Awake()
     {
-       
         _uiDocument = GetComponent<UIDocument>();
     }
 

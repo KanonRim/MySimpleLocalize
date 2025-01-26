@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using KoroBox.MySimpleLocalization;
 
 [RequireComponent(typeof(Text))]
 public class LocalizedTextUI : MonoBehaviour
