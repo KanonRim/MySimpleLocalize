@@ -38,12 +38,20 @@ namespace KoroBox.MySimpleLocalization
             yield return LoadLanguage(language);
         }
 
+        public void ChangeToNextLanguage()
+        {
+            var list = _supportedLanguages.ToList();
+            int currentIndex = list.IndexOf(_currentLanguage);
+            int nextIndex = (currentIndex + 1) % _supportedLanguages.Count();
+            LoadLanguage(list[nextIndex]);
+        }
+
         public IEnumerator LoadLanguage(string languageCode)
         {
             string filePath = Path.Combine("Localization", $"{languageCode}.json");
             return StreamingAssetsHelper.ReadFile(filePath, (data) =>
             {
-                string jsonData = data.ToString();
+                string jsonData = data.ToString(); //todo EmtyFile
                 _localizedTexts = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonData);
                 _currentLanguage = languageCode;
                 OnLanguageChanged?.Invoke();
