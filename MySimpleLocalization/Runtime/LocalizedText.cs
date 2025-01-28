@@ -22,6 +22,7 @@ namespace KoroBox.MySimpleLocalization
         private void UpdateText()
         {
             Value = LocalizationManager.Instance.GetLocalizedText(_key);
+            OnLanguageChanged?.Invoke(Value);
         }
     }
 }
