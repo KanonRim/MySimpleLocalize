@@ -38,12 +38,12 @@ namespace KoroBox.MySimpleLocalization
             yield return LoadLanguage(language);
         }
 
-        public void ChangeToNextLanguage()
+        public IEnumerator ChangeToNextLanguage()
         {
             var list = _supportedLanguages.ToList();
             int currentIndex = list.IndexOf(_currentLanguage);
             int nextIndex = (currentIndex + 1) % _supportedLanguages.Count();
-            LoadLanguage(list[nextIndex]);
+             yield return LoadLanguage(list[nextIndex]);
         }
 
         public IEnumerator LoadLanguage(string languageCode)
