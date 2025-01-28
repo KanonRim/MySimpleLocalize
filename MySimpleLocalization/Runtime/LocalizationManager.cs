@@ -51,8 +51,8 @@ namespace KoroBox.MySimpleLocalization
             string filePath = Path.Combine("Localization", $"{languageCode}.json");
             return StreamingAssetsHelper.ReadFile(filePath, (data) =>
             {
-                string jsonData = data.ToString(); //todo EmtyFile
-                _localizedTexts = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonData);
+                string jsonData = data.ToString();
+                _localizedTexts = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonData) ?? new Dictionary<string, string>(); 
                 _currentLanguage = languageCode;
                 OnLanguageChanged?.Invoke();
             });
