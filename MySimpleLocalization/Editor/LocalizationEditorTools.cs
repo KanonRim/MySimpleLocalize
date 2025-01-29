@@ -12,7 +12,7 @@ namespace KoroBox.MySimpleLocalization.Editor
         private string _baseLanguage = "ru";
         private int _translatorTypeIndex = 0;
         private string _libreTranslateUrl = "http://localhost:5000";
-
+        private string _sourceDirectory = Application.dataPath + "/StreamingAssets/Localization";
         private readonly string[] _translatorOptions = { "GoogleTranslator", "LibreTranslate" };
 
         [MenuItem("Tools/Localization/Settings")]
@@ -37,9 +37,14 @@ namespace KoroBox.MySimpleLocalization.Editor
 
             if (GUILayout.Button("Translate"))
             {
-                TranslateAllFiles(_targetLanguage, _baseLanguage, _translatorTypeIndex, _libreTranslateUrl);
+                TranslateFiles(_targetLanguage, _baseLanguage);
             }
 
+            if (GUILayout.Button("Translate Missing Keys"))
+            {
+                TranslateMissingKeysAsync(_targetLanguage, _baseLanguage);
+            }
+            
             if (GUILayout.Button("Generate File List"))
             {
                 GenerateFileList();
@@ -64,27 +69,14 @@ namespace KoroBox.MySimpleLocalization.Editor
             AssetDatabase.Refresh();
         }
 
-        private static async void TranslateAllFiles(string targetLanguage, string baseLanguage, int translatorTypeIndex,
-            string libreTranslateUrl)
+        private async void TranslateFiles(string targetLanguage, string baseLanguage)
         {
-            string sourceDirectory = Application.dataPath + "/StreamingAssets/Localization";
-
-            LocalizationTranslator translator;
-
-            if (translatorTypeIndex == 0)
-            {
-                translator = new LocalizationTranslator(new GoogleTranslator());
-            }
-            else
-            {
-                translator = new LocalizationTranslator(new LibreTranslate(libreTranslateUrl));
-            }
-
+            var translator = GetLocalizationTranslator();
             try
             {
                 await translator.TranslateLocalizationFileAsync(
-                    Path.Combine(sourceDirectory, baseLanguage + ".json"),
-                    Path.Combine(sourceDirectory, targetLanguage + ".json"),
+                    Path.Combine(_sourceDirectory, baseLanguage + ".json"),
+                    Path.Combine(_sourceDirectory, targetLanguage + ".json"),
                     targetLanguage,
                     baseLanguage
                 );
@@ -96,5 +88,39 @@ namespace KoroBox.MySimpleLocalization.Editor
                 Debug.LogError($"An error occurred: {ex.Message}");
             }
         }
+        private async void TranslateMissingKeysAsync(string targetLanguage, string baseLanguage)
+        {
+            var translator = GetLocalizationTranslator();
+            try
+            {
+                await translator.TranslateLocalizationFileAsync(
+                    Path.Combine(_sourceDirectory, baseLanguage + ".json"),
+                    Path.Combine(_sourceDirectory, targetLanguage + ".json"),
+                    targetLanguage,
+                    baseLanguage
+                );
+                Debug.Log("Translation of all files completed!");
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"An error occurred: {ex.Message}");
+            }
+        }
+        private LocalizationTranslator GetLocalizationTranslator()
+        {
+            LocalizationTranslator translator;
+            if (_translatorTypeIndex == 0)
+            {
+                translator = new LocalizationTranslator(new GoogleTranslator());
+            }
+            else
+            {
+                translator = new LocalizationTranslator(new LibreTranslate(_libreTranslateUrl));
+            }
+
+            return translator;
+        }
+
+
     }
 }

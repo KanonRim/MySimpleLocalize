@@ -43,5 +43,46 @@ namespace KoroBox.MySimpleLocalization.Editor
 
             Console.WriteLine($"Файл {outputFilePath} успешно создан.");
         }
+        
+        public async Task TranslateMissingKeysAsync(string inputFilePath, string outputFilePath,
+            string targetLanguage, string currentLanguage)
+        {
+            if (!File.Exists(inputFilePath))
+                throw new FileNotFoundException($"Файл {inputFilePath} не найден.");
+
+            // Читаем исходный файл локализации
+            var jsonContent = await File.ReadAllTextAsync(inputFilePath);
+            var inputLocalizationData = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonContent);
+
+            if (inputLocalizationData == null)
+                throw new InvalidOperationException("Не удалось загрузить данные локализации из JSON файла.");
+
+            // Проверяем, существует ли файл перевода, если нет — создаем пустой словарь
+            Dictionary<string, string> outputLocalizationData = new();
+            if (File.Exists(outputFilePath))
+            {
+                var outputJsonContent = await File.ReadAllTextAsync(outputFilePath);
+                outputLocalizationData = JsonConvert.DeserializeObject<Dictionary<string, string>>(outputJsonContent) ?? new();
+            }
+
+            // Переводим только отсутствующие ключи
+            foreach (var entry in inputLocalizationData)
+            {
+                if (!outputLocalizationData.ContainsKey(entry.Key))
+                {
+                    Console.WriteLine($"Перевод ключа: {entry.Key}...");
+                    string translatedText = await _translator.TranslateTextAsync(entry.Value, targetLanguage, currentLanguage);
+                    outputLocalizationData[entry.Key] = translatedText;
+                }
+            }
+
+            // Сохраняем обновленные данные
+            var translatedJsonContent = JsonConvert.SerializeObject(outputLocalizationData, Formatting.Indented);
+            await File.WriteAllTextAsync(outputFilePath, translatedJsonContent);
+
+            Console.WriteLine($"Файл {outputFilePath} успешно обновлён.");
+        }
+
     }
+    
 }
