@@ -93,13 +93,13 @@ namespace KoroBox.MySimpleLocalization.Editor
             var translator = GetLocalizationTranslator();
             try
             {
-                await translator.TranslateLocalizationFileAsync(
+                await translator.TranslateMissingKeysAsync(
                     Path.Combine(_sourceDirectory, baseLanguage + ".json"),
                     Path.Combine(_sourceDirectory, targetLanguage + ".json"),
                     targetLanguage,
                     baseLanguage
                 );
-                Debug.Log("Translation of all files completed!");
+                Debug.Log("Translation missing Keys completed!");
             }
             catch (System.Exception ex)
             {

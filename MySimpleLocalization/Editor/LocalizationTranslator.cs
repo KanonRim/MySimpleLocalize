@@ -68,7 +68,7 @@ namespace KoroBox.MySimpleLocalization.Editor
             // Переводим только отсутствующие ключи
             foreach (var entry in inputLocalizationData)
             {
-                if (!outputLocalizationData.ContainsKey(entry.Key))
+                if (!outputLocalizationData.ContainsKey(entry.Key) || outputLocalizationData[entry.Key] == string.Empty)
                 {
                     Console.WriteLine($"Перевод ключа: {entry.Key}...");
                     string translatedText = await _translator.TranslateTextAsync(entry.Value, targetLanguage, currentLanguage);
